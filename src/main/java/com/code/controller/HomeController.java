@@ -1,5 +1,7 @@
 package com.code.controller;
 
+import java.util.List;
+
 //import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.code.dao.UserRegistrationDao;
 import com.code.model.User;
@@ -61,7 +64,8 @@ public class HomeController {
 		return "index";
 	}
 	
-	@RequestMapping("/validate-signup")
+	
+	@RequestMapping(value="/validate-signup", method=RequestMethod.GET)
 	public String signup(Model model,
 			@RequestParam("fullName") String fullName,
 			@RequestParam("password") String password,
@@ -98,6 +102,18 @@ public class HomeController {
 		// Successful
 		model.addAttribute("fullName", " " + fullName);
 		return "index";
+	}
+	
+	
+	@RequestMapping(value="/list", method=RequestMethod.GET)
+	public String listOfUserPage(Model model) {
+		List<User> listOfUsers = userRegistrationDao.listOfUsers();
+		
+//		for (User user : listOfUsers) {
+//			System.out.println(user.getFullName() + " " + user.getEmail());
+//		}
+		model.addAttribute("listOfUsers", listOfUsers);
+		return "list";
 	}
 }
 

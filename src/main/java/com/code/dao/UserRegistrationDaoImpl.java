@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 //import com.code.dao.UserRowMapper;
 
@@ -63,4 +64,23 @@ public class UserRegistrationDaoImpl implements UserRegistrationDao {
 		
 		return jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(User.class));
 	}
+	
+	@Override
+	public List<User> listOfUsers() {
+		String sql = "SELECT * FROM user";
+		List<User> listOfUsers = jdbcTemplate.query(sql, new RowMapper<User>() {
+			@Override
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				User user = new User();
+				user.setUserId(rs.getInt("userId"));
+				user.setEmail(rs.getString("email"));
+				user.setFullName(rs.getString("fullname"));
+				System.out.println(user.getUserId());
+				return user;
+			}
+		});
+		
+		return listOfUsers;
+	}	
 }
