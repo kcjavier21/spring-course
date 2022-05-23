@@ -24,6 +24,9 @@
 					<td scope="row">
 						<a href="/editUser?userId=${list.userId}">Edit</a>
 					</td>
+					<td scope="row">
+						<a href="/deleteUser?userId=${list.userId}">Delete</a>
+					</td>
 				</tr>
 			</c:forEach>
 		</table>

@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 //import com.code.dao.UserRowMapper;
@@ -82,5 +80,23 @@ public class UserRegistrationDaoImpl implements UserRegistrationDao {
 		});
 		
 		return listOfUsers;
-	}	
+	}
+
+	@Override
+	public User findUserById(int userId) {
+		String sql = "SELECT * FROM user WHERE userId = " + userId;
+		return jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(User.class));
+	}
+	
+	@Override
+	public void updateUserRegistration(User user) {
+		String sql = "UPDATE user SET fullName='" + user.getFullName() + "', email= '" + user.getEmail() + "' WHERE userId = '" + user.getUserId() + "';";
+		jdbcTemplate.update(sql);
+	}
+	
+	@Override
+	public void deleteUser(String email) {
+		String sql = "DELETE FROM user WHERE email = '" + email + "';";
+		jdbcTemplate.update(sql);
+	}
 }
